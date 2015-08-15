@@ -5,20 +5,17 @@
 # The script expects to run in the script home dir, and uses
 # the subdir "browser-tmp" as a temporary directory.
 #
-FNAME=`echo $1 | sed -r "s/^.*\/([^\/]*)$/\1/"`
+FNAME=chrome-linux.zip
 
 # cleanup any old files (shouldn't happen on travis)
 rm -rf ./browser-tmp
 mkdir ./browser-tmp
 
 # get the files
-(cd ./browser-tmp; wget $1)
-dpkg -X ./browser-tmp/$FNAME ./browser-tmp
-
-# remove the broken link
-rm -rf ./browser-tmp/opt/google/chrome*/google-chrome
+(cd ./browser-tmp; wget -O $FNAME $1)
+unzip -d ./browser-tmp ./browser-tmp/$FNAME
 
 # make the target directory
 mkdir -p $2
-mv ./browser-tmp/opt/google/chrome*/* $2
+mv ./browser-tmp/chrome-linux/* $2
 rm -rf ./browser-tmp
